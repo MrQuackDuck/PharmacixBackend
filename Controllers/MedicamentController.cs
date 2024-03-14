@@ -63,16 +63,15 @@ public class MedicamentController : Controller
 
         var medicament = _medicamentRepository.GetById(model.Id);
 
-        bool medicamentExists = medicament != null;
-        if (!medicamentExists) return NotFound("Provided medicament wasn't found");
+        if (medicament is null) return NotFound("Provided medicament wasn't found");
         
-        var newCategory = this._medicamentCategoryRepository.GetById(model.CategoryId);
-        if (newCategory is null) return NotFound("Provided category wasn't found");
+        var updatedCategory = this._medicamentCategoryRepository.GetById(model.CategoryId);
+        if (updatedCategory is null) return NotFound("Provided category wasn't found");
         
         medicament.Title = model.Title;
         medicament.Amount = model.Amount;
         medicament.Price = model.Price;
-        medicament.Category = newCategory;
+        medicament.Category = updatedCategory;
         var success = this._medicamentRepository.Update(medicament);
 
         if (success) return Ok();

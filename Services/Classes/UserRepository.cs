@@ -96,7 +96,7 @@ public class UserRepository : IRepository<User>
 
         if (!IsPasswordCorrect(user.Username, oldPassword)) return false;
 
-        user.PasswordHash = Sha256(newPassword);
+        user.PasswordHash = EncryptSha256(newPassword);
         _dbContext.SaveChanges();
         return true;
     }
@@ -105,7 +105,7 @@ public class UserRepository : IRepository<User>
     {
         var user = GetByUsername(username);
         if (user == null) return false;
-        if (user.PasswordHash == Sha256(password)) return true;
+        if (user.PasswordHash == EncryptSha256(password)) return true;
 
         return false;
     }
@@ -116,7 +116,7 @@ public class UserRepository : IRepository<User>
         return !(target == null);
     }
     
-    private string Sha256(string inputString)
+    public string EncryptSha256(string inputString)
     {
         var crypt = new SHA256Managed();
         string hash = String.Empty;

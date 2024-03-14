@@ -22,9 +22,6 @@ public class AuthController : Controller
     [HttpPost]
     public ActionResult Login([FromBody]LoginModel userData)
     {
-        if (userData.Username.Length > 20 || userData.Password.Length > 80)
-            return Forbid();
-
         var user = _userRepository.GetByUsername(userData?.Username) ?? null;
         
         // If the user is not found
@@ -33,7 +30,7 @@ public class AuthController : Controller
 
         // If user's password is correct
         if (!_userRepository.IsPasswordCorrect(userData.Username, userData.Password)) 
-            return Problem();
+            return Problem("Incorrect password provided");
 
         var claims = new List<Claim>
         {

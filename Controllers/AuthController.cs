@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Pharmacix.Models.Classes.AcceptModels;
+using Pharmacix.Models.Classes.AcceptModels.Misc;
 using Pharmacix.Services;
 
 namespace Pharmacix.Controllers;
@@ -12,11 +13,13 @@ public class AuthController : Controller
 {
     private readonly IConfiguration _configuration;
     private readonly UserRepository _userRepository;
+    private readonly UserAccessor _userAccessor;
 
-    public AuthController(IConfiguration configuration, UserRepository userRepository)
+    public AuthController(IConfiguration configuration, UserRepository userRepository, UserAccessor userAccessor)
     {
         _configuration = configuration;
         _userRepository = userRepository;
+        _userAccessor = userAccessor;
     }
     
     [HttpPost]
@@ -57,6 +60,34 @@ public class AuthController : Controller
         });
         
         return Ok(new { token });
+    }
+    
+    [HttpGet]
+    [Authorize]
+    public async Task<ActionResult> CurrentUser()
+    {
+        string id = HttpContext.User.Claims.FirstOrDefault(claim => claim.Type == "Id").Value;
+        string username = HttpContext.User.Claims.FirstOrDefault(claim => claim.Type == "Username").Value;
+
+        return Ok(new { id, username });
+    }
+    
+    [HttpPost]
+    [Authorize]
+    public async Task<IActionResult> ChangePassword([FromBody]ChangePasswordModel model)
+    {
+        var oldPassword = model.OldPassword;
+        var newPassword = model.NewPassword;
+
+        var user = _userAccessor.GetCurrentUser();
+        bool result = _userRepository.ChangePassword(user.Id, oldPassword, newPassword);
+        
+        if (result)
+        {
+            Response.Cookies.Delete("jwt");
+            return Ok();
+        }
+        else return Forbid();
     }
     
     [HttpGet]

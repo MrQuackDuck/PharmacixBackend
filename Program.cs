@@ -9,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddDbContext<PharmacixDbContext>();
 builder.Services.AddScoped<UserRepository>();
+builder.Services.AddScoped<UserAccessor>();
 builder.Services.AddScoped<MedicamentRepository>();
 builder.Services.AddScoped<MedicamentCategoryRepository>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();

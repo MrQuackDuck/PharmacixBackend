@@ -33,7 +33,7 @@ public class UserController : Controller
 
     [HttpPost]
     [Authorize]
-    public ActionResult<bool> Create(CreateUserModel model)
+    public ActionResult<bool> Create([FromBody]CreateUserModel model)
     {
         if (model is null) return BadRequest();
 
@@ -48,15 +48,15 @@ public class UserController : Controller
         else return BadRequest();
     }
     
-    [HttpDelete]
+    [HttpPost]
     [Authorize]
-    public ActionResult<bool> Delete(int id)
+    public ActionResult<bool> Delete([FromBody]DeleteUserModel model)
     {
-        var user = _userRepository.GetById(id);
+        var user = _userRepository.GetById(model.Id);
 
         if (user is null) return NotFound("Provided user wasn't found");
         
-        bool success = _userRepository.Delete(id);
+        bool success = _userRepository.Delete(user);
         
         if (success) return Ok();
         else return BadRequest();

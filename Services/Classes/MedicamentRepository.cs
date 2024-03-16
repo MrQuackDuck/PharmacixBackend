@@ -1,4 +1,5 @@
-﻿using Pharmacix.DatabaseContexts;
+﻿using Microsoft.EntityFrameworkCore;
+using Pharmacix.DatabaseContexts;
 using Pharmacix.Models.Classes;
 using Pharmacix.Services.Interfaces;
 
@@ -73,12 +74,15 @@ public class MedicamentRepository : IRepository<Medicament>
     public List<Medicament> GetAll()
     {
         return _dbContext.Medicines
+            .Include("Category")
             .OrderByDescending(medicament => medicament.Id)
             .ToList();
     }
 
     public Medicament? GetById(int id)
     {
-        return _dbContext.Medicines.FirstOrDefault(medicament => medicament.Id == id) ?? null;
+        return _dbContext.Medicines
+            .Include("Category")
+            .FirstOrDefault(medicament => medicament.Id == id) ?? null;
     }
 }

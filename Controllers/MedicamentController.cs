@@ -35,7 +35,7 @@ public class MedicamentController : Controller
 
     [HttpPost]
     [Authorize]
-    public ActionResult<bool> Create(CreateMedicamentModel model)
+    public ActionResult<bool> Create([FromBody]CreateMedicamentModel model)
     {
         if (model is null) return BadRequest();
         
@@ -57,7 +57,7 @@ public class MedicamentController : Controller
     
     [HttpPut]
     [Authorize]
-    public ActionResult<bool> Edit(EditMedicamentModel model)
+    public ActionResult<bool> Edit([FromBody]EditMedicamentModel model)
     {
         if (model is null) return BadRequest();
 
@@ -78,15 +78,15 @@ public class MedicamentController : Controller
         else return BadRequest();
     }
 
-    [HttpDelete]
+    [HttpPost]
     [Authorize]
-    public ActionResult<bool> Delete(int id)
+    public ActionResult<bool> Delete([FromBody]DeleteMedicamentModel model)
     {
-        var medicament = _medicamentRepository.GetById(id);
+        var medicament = _medicamentRepository.GetById(model.Id);
 
         if (medicament is null) return NotFound("Provided medicament wasn't found");
         
-        bool success = _medicamentRepository.Delete(id);
+        bool success = _medicamentRepository.Delete(medicament);
         
         if (success) return Ok();
         else return BadRequest();

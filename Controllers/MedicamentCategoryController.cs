@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Pharmacix.Models.Classes;
+using Pharmacix.Models.Classes.AcceptModels;
 using Pharmacix.Models.Classes.AcceptModels.MedicamentCategory;
 using Pharmacix.Services;
 
@@ -35,7 +36,7 @@ public class MedicamentCategoryController : Controller
     
     [HttpPost]
     [Authorize]
-    public ActionResult<bool> Create(CreateMedicamentCategoryModel model)
+    public ActionResult<bool> Create([FromBody]CreateMedicamentCategoryModel model)
     {
         if (model is null) return BadRequest();
 
@@ -51,7 +52,7 @@ public class MedicamentCategoryController : Controller
     
     [HttpPut]
     [Authorize]
-    public ActionResult<bool> Edit(EditMedicamentCategoryModel model)
+    public ActionResult<bool> Edit([FromBody]EditMedicamentCategoryModel model)
     {
         if (model is null) return BadRequest();
 
@@ -66,15 +67,15 @@ public class MedicamentCategoryController : Controller
         else return BadRequest();
     }
     
-    [HttpDelete]
+    [HttpPost]
     [Authorize]
-    public ActionResult<bool> Delete(int id)
+    public ActionResult<bool> Delete([FromBody]DeleteMedicamentCategoryModel model)
     {
-        var medicament = _medicamentCategoryRepository.GetById(id);
+        var medicament = _medicamentCategoryRepository.GetById(model.Id);
 
         if (medicament is null) return NotFound("Provided category wasn't found");
         
-        bool success = _medicamentCategoryRepository.Delete(id);
+        bool success = _medicamentCategoryRepository.Delete(medicament);
         
         if (success) return Ok();
         else return BadRequest();

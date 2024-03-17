@@ -9,10 +9,12 @@ namespace Pharmacix.Controllers;
 public class UserController : Controller
 {
     private readonly UserRepository _userRepository;
+    private readonly UserAccessor _userAccessor;
 
-    public UserController(UserRepository userRepository)
+    public UserController(UserRepository userRepository, UserAccessor userAccessor)
     {
         _userRepository = userRepository;
+        _userAccessor = userAccessor;
     }
 
     [HttpGet]
@@ -55,6 +57,7 @@ public class UserController : Controller
         var user = _userRepository.GetById(model.Id);
 
         if (user is null) return NotFound("Provided user wasn't found");
+        if (_userAccessor.GetCurrentUser().Id == user.Id) return BadRequest("You can't delete yourself!");
         
         bool success = _userRepository.Delete(user);
         

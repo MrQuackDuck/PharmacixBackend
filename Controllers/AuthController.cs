@@ -64,17 +64,19 @@ public class AuthController : Controller
     
     [HttpGet]
     [Authorize]
-    public async Task<ActionResult> CurrentUser()
+    public ActionResult CurrentUser()
     {
         string id = HttpContext.User.Claims.FirstOrDefault(claim => claim.Type == "Id").Value;
         string username = HttpContext.User.Claims.FirstOrDefault(claim => claim.Type == "Username").Value;
 
+        if (_userRepository.GetById(int.Parse(id)) is null) return Unauthorized();
+        
         return Ok(new { id, username });
     }
     
     [HttpPost]
     [Authorize]
-    public async Task<IActionResult> ChangePassword([FromBody]ChangePasswordModel model)
+    public ActionResult ChangePassword([FromBody]ChangePasswordModel model)
     {
         var oldPassword = model.OldPassword;
         var newPassword = model.NewPassword;
@@ -92,7 +94,7 @@ public class AuthController : Controller
     
     [HttpGet]
     [Authorize]
-    public async Task<IActionResult> Logout()
+    public IActionResult Logout()
     {
         Response.Cookies.Delete("jwt");
         return Ok();

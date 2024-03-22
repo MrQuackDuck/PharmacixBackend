@@ -78,11 +78,12 @@ public class MedicamentController : Controller
         else return BadRequest();
     }
 
-    [HttpPost]
+    [HttpDelete]
     [Authorize]
-    public ActionResult<bool> Delete([FromBody]DeleteMedicamentModel model)
+    [Route("API/Medicament/Delete/{id}")]
+    public ActionResult<bool> Delete(int id)
     {
-        var medicament = _medicamentRepository.GetById(model.Id);
+        var medicament = _medicamentRepository.GetById(id);
 
         if (medicament is null) return NotFound("Provided medicament wasn't found");
         

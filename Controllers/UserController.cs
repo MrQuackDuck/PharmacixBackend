@@ -50,11 +50,12 @@ public class UserController : Controller
         else return BadRequest();
     }
     
-    [HttpPost]
+    [HttpDelete]
     [Authorize]
-    public ActionResult<bool> Delete([FromBody]DeleteUserModel model)
+    [Route("API/User/Delete/{id}")]
+    public ActionResult<bool> Delete(int id)
     {
-        var user = _userRepository.GetById(model.Id);
+        var user = _userRepository.GetById(id);
 
         if (user is null) return NotFound("Provided user wasn't found");
         if (_userAccessor.GetCurrentUser().Id == user.Id) return BadRequest("You can't delete yourself!");

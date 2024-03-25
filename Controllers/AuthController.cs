@@ -3,6 +3,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using Pharmacix.Models.Classes;
 using Pharmacix.Models.Classes.AcceptModels;
 using Pharmacix.Models.Classes.AcceptModels.Misc;
 using Pharmacix.Services;
@@ -66,12 +67,9 @@ public class AuthController : Controller
     [Authorize]
     public ActionResult CurrentUser()
     {
-        string id = HttpContext.User.Claims.FirstOrDefault(claim => claim.Type == "Id").Value;
-        string username = HttpContext.User.Claims.FirstOrDefault(claim => claim.Type == "Username").Value;
-
-        if (_userRepository.GetById(int.Parse(id)) is null) return Unauthorized();
-        
-        return Ok(new { id, username });
+        User user = _userAccessor.GetCurrentUser();
+        if (user is null) return Unauthorized();
+        return Ok(new { user.Id, user.Username });
     }
     
     [HttpPost]

@@ -34,7 +34,7 @@ public class AuthController : Controller
 
         // If user's password is correct
         if (!_userRepository.IsPasswordCorrect(userData.Username, userData.Password)) 
-            return Problem("Incorrect password provided");
+            return Unauthorized("Incorrect password provided");
 
         var claims = new List<Claim>
         {

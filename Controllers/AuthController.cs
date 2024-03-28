@@ -10,6 +10,7 @@ using Pharmacix.Services;
 
 namespace Pharmacix.Controllers;
 
+[Route("API/[controller]/[action]")]
 public class AuthController : Controller
 {
     private readonly IConfiguration _configuration;
@@ -30,11 +31,11 @@ public class AuthController : Controller
         
         // If the user is not found
         if (user is null) 
-            return Unauthorized();
+            return Unauthorized("Incorrect username or password provided");
 
         // If user's password is correct
         if (!_userRepository.IsPasswordCorrect(userData.Username, userData.Password)) 
-            return Unauthorized("Incorrect password provided");
+            return Unauthorized("Incorrect username or password provided");
 
         var claims = new List<Claim>
         {

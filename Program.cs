@@ -1,9 +1,11 @@
 
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using Pharmacix.DatabaseContexts;
 using Pharmacix.Services;
+using Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
@@ -49,12 +51,32 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGenWithConventionalRoutes(options =>
+{
+    options.IgnoreTemplateFunc = (template) => template.StartsWith("API/");
+    options.SkipDefaults = true;
+});
+
 var app = builder.Build();
 
 app.UseCors();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+        options.RoutePrefix = string.Empty;
+        options.DocumentTitle = "Swagger";
+        options.EnableDeepLinking();
+    });
+}
 
 app.MapControllerRoute("default", "API/{controller}/{action}/");
 

@@ -6,6 +6,7 @@ using Pharmacix.Services;
 
 namespace Pharmacix.Controllers;
 
+[Route("API/[controller]/[action]")]
 public class MedicamentController : Controller
 {
     private readonly MedicamentRepository _medicamentRepository;
@@ -19,6 +20,7 @@ public class MedicamentController : Controller
     
     [HttpGet]
     [Authorize]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public ActionResult<List<Medicament>> GetAll()
     {
         return _medicamentRepository.GetAll();

@@ -7,6 +7,7 @@ using Pharmacix.Services;
 
 namespace Pharmacix.Controllers;
 
+[Route("API/[controller]/[action]")]
 public class MedicamentCategoryController : Controller
 {
     private readonly MedicamentRepository _medicamentRepository;

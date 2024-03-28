@@ -6,6 +6,7 @@ using Pharmacix.Services;
 
 namespace Pharmacix.Controllers;
 
+[Route("API/[controller]/[action]")]
 public class UserController : Controller
 {
     private readonly UserRepository _userRepository;

@@ -9,6 +9,10 @@
 # JetBrains files
 .idea
 
+# Custom
+data.db
+/obj
+
 # User-specific files
 *.rsuser
 *.suo

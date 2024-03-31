@@ -68,9 +68,8 @@ public class MedicamentCategoryController : Controller
         else return BadRequest();
     }
     
-    [HttpDelete]
+    [HttpDelete("{id}")]
     [Authorize]
-    [Route("API/MedicamentCategory/Delete/{id}")]
     public ActionResult<bool> Delete(int id)
     {
         var medicament = _medicamentCategoryRepository.GetById(id);

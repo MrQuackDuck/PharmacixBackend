@@ -80,9 +80,8 @@ public class MedicamentController : Controller
         else return BadRequest();
     }
 
-    [HttpDelete]
+    [HttpDelete("{id}")]
     [Authorize]
-    [Route("API/Medicament/Delete/{id}")]
     public ActionResult<bool> Delete(int id)
     {
         var medicament = _medicamentRepository.GetById(id);

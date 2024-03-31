@@ -51,9 +51,8 @@ public class UserController : Controller
         else return BadRequest();
     }
     
-    [HttpDelete]
+    [HttpDelete("{id}")]
     [Authorize]
-    [Route("API/User/Delete/{id}")]
     public ActionResult<bool> Delete(int id)
     {
         var user = _userRepository.GetById(id);

@@ -40,6 +40,8 @@ public class UserController : Controller
     {
         if (model is null) return BadRequest();
 
+        if (_userRepository.GetByUsername(model.Username) != null) return BadRequest("User already exists");
+
         var success = this._userRepository.Create(
             new User()
             {

@@ -6,13 +6,19 @@
 </p>
 
 <b>BackEnd</b> for pharmacy management website. <br>
-The website was developed as a coursework project at my university.
+The website was developed as a coursework project at my university. <br>
+
+<b>FrontEnd</b> can be found <a href="https://github.com/MrQuackDuck/PharmacixFrontend/tree/master">here</a>.
 
 ## 🖥 Development server
 
 1. Install <a href="https://dotnet.microsoft.com/en-us/download/dotnet/8.0">.NET 8</a>
 2. Clone this repo
 3. Run `dotnet run` command
+
+## 🔐 Admin panel credentials
+<b>Login</b>: admin<br>
+<b>Password</b>: admin
 
 ## 📷 Swagger Preview
 <img width=600 src="https://github.com/MrQuackDuck/PharmacixBackend/assets/61251075/7bd0e826-db9b-400c-8e58-86488ef5f008" /><br>
